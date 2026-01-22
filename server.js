@@ -5,7 +5,7 @@ import { promisify } from 'util';
 const execAsync = promisify(exec);
 
 console.log('🚀 Servidor de marcajes iniciado...');
-console.log('⏰ Horarios configurados:');
+console.log('⏰ Horarios configurados (MARTES Y JUEVES):');
 console.log('   07:03 - Entrada (Teletrabajo SÍ)');
 console.log('   12:58 - Salida');
 console.log('   13:28 - Entrada (Teletrabajo NO)');
@@ -33,28 +33,28 @@ async function ejecutarMarcaje(action, remoteWorking, descripcion) {
   }
 }
 
-// 07:03 - Entrada (Teletrabajo SÍ)
-cron.schedule('3 7 * * *', async () => {
+// Formato cron: min hour day month weekday
+// Martes = 2, Jueves = 4
+
+// 07:03 - Entrada (Teletrabajo SÍ) - Solo Martes y Jueves
+cron.schedule('3 7 * * 2,4', async () => {
   await ejecutarMarcaje(1, 1, 'Entrada - Teletrabajo SÍ');
 }, { timezone: 'Europe/Madrid' });
 
-// 12:58 - Salida
-cron.schedule('58 12 * * *', async () => {
+// 12:58 - Salida - Solo Martes y Jueves
+cron.schedule('58 12 * * 2,4', async () => {
   await ejecutarMarcaje(0, 0, 'Salida');
 }, { timezone: 'Europe/Madrid' });
 
-// 13:28 - Entrada (Teletrabajo NO)
-cron.schedule('28 13 * * *', async () => {
+// 13:28 - Entrada (Teletrabajo NO) - Solo Martes y Jueves
+cron.schedule('28 13 * * 2,4', async () => {
   await ejecutarMarcaje(1, 0, 'Entrada - Teletrabajo NO');
 }, { timezone: 'Europe/Madrid' });
 
-// 15:33 - Salida
-cron.schedule('33 15 * * *', async () => {
+// 15:33 - Salida - Solo Martes y Jueves
+cron.schedule('33 15 * * 2,4', async () => {
   await ejecutarMarcaje(0, 0, 'Salida');
 }, { timezone: 'Europe/Madrid' });
 
-console.log('✅ Todas las tareas programadas correctamente');
+console.log('✅ Todas las tareas programadas correctamente (MARTES Y JUEVES)');
 console.log('📝 Presiona Ctrl+C para detener el servidor\n');
-
-// Mantener el servidor corriendo
-// (no es necesario llamar a process.stdin.resume() en Node.js moderno)
